@@ -1,0 +1,37 @@
+name: Check protobuf
+
+on:
+    push:
+      branches: [ main, 'feat/*' ]
+    pull_request:
+      branches: [ main, 'feat/*' ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+        with:
+          fetch-depth: 0
+
+      - name: Install Golang
+        uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9 # v4.0.0
+        with:
+          go-version: '1.20.x'
+          check-latest: true
+
+      - name: Install protobuf
+        uses: trail-of-forks/setup-protoc@a97892a429d98fae78d26f40334ab7eb616d08b9
+        with:
+          version: '22.3'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate protobuf
+        run: make -C $GITHUB_WORKSPACE gen-proto
+
+      - name: Ensure no files were modified as a result of the protobuf generation
+        run: git update-index --refresh && git diff-index --quiet -I"^\/\/\s+(-\s+)?protoc(-gen-go)?\s+v[0-9]+\.[0-9]+\.[0-9]+$" HEAD -- || git diff -I"^\/\/\s+(-\s+)?protoc(-gen-go)?\s+v[0-9]+\.[0-9]+\.[0-9]+$" --exit-code

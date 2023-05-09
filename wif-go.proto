@@ -1,0 +1,16 @@
+syntax = "proto3";
+package wifgo.v1beta;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "github.com/loicsikidi/wif-go/pkg/generated/protobuf";
+
+message AttributeSchema {
+  google.protobuf.Value assertion = 1;
+  google.protobuf.Value attribute = 2;
+  google.protobuf.Value google = 3;
+}
+
+message OidcSchema {
+  google.protobuf.Value assertion = 1;
+}

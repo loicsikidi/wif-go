@@ -1,0 +1,198 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.card {
+  padding: 2em;
+}
+
+#app {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+.toolbar {
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.115);
+}
+
+.toolbar-item {
+  margin: 0;
+  height: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.toolbar-item.has-addons {
+flex-wrap: nowrap;
+}
+
+.level {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.level img {
+  display: inline-block;
+  vertical-align: top;
+}
+
+@media screen and (min-width: 769px), print {
+  .level {
+      display: flex;
+  }
+}
+
+@media screen and (min-width: 769px), print {
+  .level-left {
+     display: flex;
+  }
+}
+
+.level-left {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@media screen and (min-width: 769px), print {
+  .level-right {
+      display: flex;
+  }
+}
+
+.level-right {
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.level-left, .level-right {
+  flex-basis: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.level-item {
+  align-items: center;
+  display: flex;
+  flex-basis: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  justify-content: center;
+}
+
+.button-icon {
+  height: 100%;
+  width: 1.25rem;
+  object-fit: contain;
+}
+
+.button-label {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.button.is-info {
+  background-color: #42b883;;
+  border-color: transparent;
+  color: #fff;
+}
+
+.buttons .button:not(:last-child):not(.is-fullwidth) {
+  margin-right: 0.5rem;
+}
+
+.buttons .button {
+  margin-bottom: 0.5rem;
+}
+
+.buttons:last-child {
+  margin-bottom: -0.5rem;
+}
+
+.has-tooltip-bottom{
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.button:hover {
+filter: drop-shadow(0 0 2em #42b883);
+}

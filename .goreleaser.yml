@@ -1,0 +1,115 @@
+project_name: wif-go
+
+env:
+  - GO111MODULE=on
+  - CGO_ENABLED=0
+
+# Prevents parallel builds from stepping on each others toes downloading modules
+before:
+  hooks:
+    - go mod tidy
+    - make clean-playground
+    - make build-playground
+    - make gen-hack
+
+sboms:
+- artifacts: binary
+
+builds:
+  - id: linux
+    binary: wif-go-linux-{{ .Arch }}
+    no_unique_dist_dir: true
+    main: ./cmd/server
+    flags:
+      - -trimpath
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+      - arm
+    goarm:
+      - '7'
+    tags:
+      - embed
+    ldflags:
+      - "-s -w -X main.Version={{.Version}}"
+  - id: darwin-amd64
+    binary: wif-go-darwin-amd64
+    no_unique_dist_dir: true
+    main: ./cmd/server
+    flags:
+      - -trimpath
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    goos:
+      - darwin
+    goarch:
+      - amd64
+    tags:
+      - embed
+    ldflags:
+      - "-s -w -X main.Version={{.Version}}"
+  - id: darwin-arm64
+    binary: wif-go-darwin-arm64
+    no_unique_dist_dir: true
+    main: ./cmd/server
+    flags:
+      - -trimpath
+    goos:
+      - darwin
+    goarch:
+      - arm64
+    tags:
+      - embed
+    ldflags:
+      - "-s -w -X main.Version={{.Version}}"
+
+kos:
+  - build: linux
+    base_image: cgr.dev/chainguard/static
+    main: ./cmd/server
+    tags:
+      - '{{ .Tag }}'
+      - latest
+    creation_time: '{{.CommitTimestamp}}'
+    ko_data_creation_time: '{{.CommitTimestamp}}'
+    sbom: spdx
+    bare: true
+    preserve_import_paths: false
+    base_import_paths: false
+    platforms:
+      - all
+
+signs:
+  # Keyless
+  - id: wif-go-keyless
+    signature: "${artifact}-keyless.sig"
+    certificate: "${artifact}-keyless.pem"
+    cmd: cosign
+    args: ["sign-blob", "--output-signature", "${artifact}-keyless.sig", "--output-certificate", "${artifact}-keyless.pem", "${artifact}", "--yes"]
+    artifacts: binary
+  - id: checksum-keyless
+    signature: "${artifact}-keyless.sig"
+    certificate: "${artifact}-keyless.pem"
+    cmd: cosign
+    args: ["sign-blob", "--output-signature", "${artifact}-keyless.sig", "--output-certificate", "${artifact}-keyless.pem", "${artifact}", "--yes"]
+    artifacts: checksum
+
+archives:
+  - format: binary
+    name_template: "{{ .Binary }}"
+    allow_different_binary_count: true
+
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+
+snapshot:
+  name_template: SNAPSHOT-{{ .ShortCommit }}
+
+release:
+  prerelease: allow # remove this when we start publishing non-prerelease or set to auto
+  draft: true # allow for manual edits
+  github:
+    owner: loicsikidi
+    name: wif-go
