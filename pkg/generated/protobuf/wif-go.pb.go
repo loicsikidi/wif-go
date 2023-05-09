@@ -70,7 +70,7 @@ func (x *AttributeSchema) GetAssertion() *structpb.Value {
 	return nil
 }
 
-func (x *AttributeSchema) GetAttributeName() *structpb.Value {
+func (x *AttributeSchema) GetAttribute() *structpb.Value {
 	if x != nil {
 		return x.Attribute
 	}
