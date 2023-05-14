@@ -50,7 +50,7 @@ else
 endif
 
 MODULE_VERSION=main
-LDFLAGS=-X $(MODULE_VERSION).Version=$(GIT_VERSION)
+LDFLAGS=-s -w -X $(MODULE_VERSION).Version=$(GIT_VERSION)
 
 # Binaries
 PROTOC-GEN-GO := $(TOOLS_BIN_DIR)/protoc-gen-go

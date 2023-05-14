@@ -33,8 +33,6 @@ builds:
       - '7'
     tags:
       - embed
-    ldflags:
-      - "-s -w -X main.Version={{.Version}}"
   - id: darwin-amd64
     binary: wif-go-darwin-amd64
     no_unique_dist_dir: true
@@ -48,8 +46,6 @@ builds:
       - amd64
     tags:
       - embed
-    ldflags:
-      - "-s -w -X main.Version={{.Version}}"
   - id: darwin-arm64
     binary: wif-go-darwin-arm64
     no_unique_dist_dir: true
@@ -62,8 +58,6 @@ builds:
       - arm64
     tags:
       - embed
-    ldflags:
-      - "-s -w -X main.Version={{.Version}}"
 
 kos:
   - build: linux
