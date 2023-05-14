@@ -6,6 +6,7 @@
             :name="'mapping'"
             :config="configs['mapping'].editor_config"
             :language="configs['mapping'].language"
+            :lint="configs['mapping'].lint"
             :defaultValue="configs['mapping'].defaultValue"
           />
         </div>
@@ -15,6 +16,7 @@
             :name="'input'"
             :config="configs['input'].editor_config"
             :language="configs['input'].language"
+            :lint="configs['mapping'].lint"
             :defaultValue="configs['input'].defaultValue"
           />
         </div>
@@ -34,6 +36,7 @@
 <script setup>
     import { computed, ref, toRaw } from 'vue'
     import { json } from '@codemirror/lang-json'
+    import { jsonParseLinter } from '@codemirror/lang-json'
     import Editor from './Editor.vue'
 
     const props = defineProps({
@@ -50,7 +53,7 @@
         indentWithTab: true,
         tabSize: 2,
         autofocus: true,
-        height: '100%'
+        height: 'calc(100% - 1.5rem)'
     }
 
     for (const [key, config] of Object.entries(toRaw(props.editors))) {
@@ -58,7 +61,8 @@
       configs[key] = {
         editor_config: {...{header, placeholder}, ..._defaultConfig},
         defaultValue: config.defaultValue,
-        language: json
+        language: json,
+        lint: jsonParseLinter
       }
     }
     return configs
@@ -104,17 +108,18 @@
   </script>
 
 <style scoped>
+#container {
+  display: inherit;
+}
+
 #page {
-  /* width: 100vw; */
-  height: 85vh;
-  box-sizing: border-box;
-	display: grid;
+  display: grid;
 	grid-template-areas:
 		'policy-editor gutter-horizontal input'
 		'policy-editor gutter-horizontal gutter-vertical'
 		'policy-editor gutter-horizontal output';
 	grid-template-rows: 1fr 6px 1fr;
-	grid-template-columns: 6fr 6px 4fr;	
+	grid-template-columns: 6fr 6px 4fr;
 }
 
 /*****************************/

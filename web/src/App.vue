@@ -74,13 +74,33 @@ window.addEventListener('DOMContentLoaded', async () => {
   <div class="loading-box" v-if="loading">
       <Loading />
   </div>
-  <div v-else>
-    <Grid :editors="config.editors"  />
+  <div id="body" v-else>
+    <div id="playground-content">
+      <Grid :editors="config.editors"  />
+    </div>
     <Footer :version="version" />
   </div>
 </template>
 
 <style lang="css">
+  #body {
+      position: absolute;
+      top: 56px;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+  }
+
+  #playground-content {
+    border: #0a0a0a;
+    overflow: hidden;
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+  }
+
   .loading-box {
     width: 100%;
     min-height: 20rem;

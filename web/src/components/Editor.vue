@@ -23,6 +23,7 @@
 <script setup>
     import { shallowRef, computed } from 'vue'
     import { EditorView } from '@codemirror/view'
+    import { linter } from '@codemirror/lint'
     import { Codemirror } from 'vue-codemirror'
     import { state } from '../js/state'
 
@@ -40,7 +41,8 @@
         required: false
       },
       theme: [Object, Array],
-      language: Function
+      language: Function,
+      lint: Function
     })
 
     // [INFO]: set default value to state
@@ -51,6 +53,9 @@
         const result = []
         if (props.language) {
           result.push(props.language())
+        }
+        if (props.lint){
+          result.push(linter(props.lint()))
         }
         if (props.theme) {
           result.push(props.theme)
