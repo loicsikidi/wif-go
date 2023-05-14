@@ -16,7 +16,7 @@
             <img src="../assets/github.svg" id="github-logo" alt="Github logo">
           </a>
         </div>
-        <div class="level-right toolbar-item">wif-go&nbsp;<span class="wif-go-version">{{ version }}</span>
+        <div class="level-right toolbar-item">wif-go&nbsp;<span class="wif-go-version"><a :href="`https://github.com/loicsikidi/wif-go/releases/tag/${version}`" target="_blank">{{ version }}</a></span>
         </div>
     </div>
 </template>

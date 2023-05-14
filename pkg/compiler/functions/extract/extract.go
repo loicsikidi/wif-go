@@ -10,11 +10,26 @@ import (
 	"github.com/loicsikidi/wif-go/pkg/compiler/functions"
 )
 
+// # Extract
+//
+// Returns a string from a source based on an extraction template,
+// which specifies the part of the attribute to extract.
+//
+// <string>.extract(<string>) -> <string>
+//
+// Examples:
+//
+//	'id/123456789'.extract('id/{end}')      // returns '123456789'
+//	'id/123456789'.extract('{start}/')      // returns 'id'
+//	'id/123456789'.extract('{all}')         // returns 'id/123456789'
+//	'id/123456789'.extract('foo/{nothing}') // returns ''
+//
+
 func init() {
-	functions.Register("extract", &extract{})
+	functions.Register("extract", &function{})
 }
 
-type extract struct{}
+type function struct{}
 
 type Helper struct {
 	Template   string
@@ -42,11 +57,11 @@ func Identifier(source string) string {
 	return re.FindString(source)
 }
 
-func Extract(source string, template string) string {
+func extract(source string, template string) (string, error) { //nolint:unparam
 	identifier := Identifier(template)
 
 	if identifier == "" {
-		return ""
+		return "", nil
 	}
 
 	config := &Helper{
@@ -57,37 +72,38 @@ func Extract(source string, template string) string {
 	}
 
 	if !config.HasPrefix && !config.HasSuffix {
-		return source
+		return source, nil
 	}
 
 	re := strings.ReplaceAll(template, identifier, "(.*)")
 
 	r, err := regexp.Compile(re)
 	if err != nil {
-		return ""
+		return "", nil
 	}
 	match := r.FindStringSubmatch(source)
 	if len(match) < 2 {
-		return ""
+		return "", nil
 	}
 
 	if config.HasSuffix {
 		index := strings.Index(match[1], config.GetSuffix())
 		if index > 0 {
-			return match[1][:index]
+			return match[1][:index], nil
 		}
 	}
-	return match[1]
+	return match[1], nil
 }
 
-func (f *extract) GetFn() cel.EnvOption {
+func (f *function) GetFn() cel.EnvOption {
 	return cel.Function("extract",
 		cel.MemberOverload("string_extract_string",
 			[]*cel.Type{cel.StringType, cel.StringType},
 			cel.StringType,
-			cel.BinaryBinding(func(lhs, rhs ref.Val) ref.Val {
-				return types.String(
-					Extract(lhs.Value().(string), rhs.Value().(string)))
+			cel.BinaryBinding(func(str, extractor ref.Val) ref.Val {
+				s := str.(types.String)
+				ext := extractor.(types.String)
+				return functions.StringOrError(extract(string(s), string(ext)))
 			},
 			)))
 }
