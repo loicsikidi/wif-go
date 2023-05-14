@@ -23,12 +23,12 @@ Today, GCP _(Google Cloud Platforms)_ doesn't provide a way to test `Workload Id
 Provider support:
 
   * [x] `oidc`
-  * [] `aws`
-  * [] `saml`
+  * [ ] `aws`
+  * [ ] `saml`
 
 Optimization:
 
-  * [] `wif-go.wasm`: Improve the size (currently ~ 16MB) in order to load the playground faster
+  * [ ] `wif-go.wasm`: Improve the size (currently ~ 16MB) in order to load the playground faster
 
 ## Acknowledgement 🫶
 
