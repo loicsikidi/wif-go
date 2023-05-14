@@ -90,8 +90,8 @@ func TestExtract(t *testing.T) {
 	for i, tst := range tests {
 		tc := tst
 		t.Run(fmt.Sprintf("[%d]", i), func(t *testing.T) {
-			if out := Extract(source, tc.val); out != tc.expected {
-				t.Fatalf("Extract(%s) = %s, expected %s", tc.val, out, tc.expected)
+			if out, _ := extract(source, tc.val); out != tc.expected {
+				t.Fatalf("extract(%s) = %s, expected %s", tc.val, out, tc.expected)
 			}
 		})
 	}

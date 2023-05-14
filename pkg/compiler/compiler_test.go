@@ -2,7 +2,6 @@ package compiler
 
 import (
 	"fmt"
-	"reflect"
 	"strconv"
 	"testing"
 
@@ -66,85 +65,6 @@ func TestInvalidInputs(t *testing.T) {
 
 			if err == nil {
 				t.Fatalf("Run(%v) -> expect exception", err)
-			}
-		})
-	}
-}
-
-func TestExtractFn(t *testing.T) {
-	type Expected struct {
-		Result  map[string]any
-		IsError bool
-	}
-	tests := []struct {
-		input    *Input
-		provider provider.Provider
-		expected *Expected
-	}{
-		{
-			input: &Input{
-				Payload:          `{"sub": "prefix/1234567890", "name": "John Doe", "iat": 1516239022}`,
-				AttributeMapping: map[string]string{GoogleSubject: "assertion.sub.extract('/{id}')"},
-			},
-			provider: &oidc.Provider{},
-			expected: &Expected{
-				Result: map[string]any{GoogleSubject: "1234567890"},
-			},
-		},
-		{
-			input: &Input{
-				Payload:          `{"sub": "prefix/1234567890/suffix", "name": "John Doe", "iat": 1516239022}`,
-				AttributeMapping: map[string]string{GoogleSubject: "assertion.sub.extract('/{id}')"},
-			},
-			provider: &oidc.Provider{},
-			expected: &Expected{
-				Result: map[string]any{GoogleSubject: "1234567890/suffix"},
-			},
-		},
-		{
-			input: &Input{
-				Payload:          `{"sub": "prefix/1234567890/suffix", "name": "John Doe", "iat": 1516239022}`,
-				AttributeMapping: map[string]string{GoogleSubject: "assertion.sub.extract('/{id}/')"},
-			},
-			provider: &oidc.Provider{},
-			expected: &Expected{
-				Result: map[string]any{GoogleSubject: "1234567890"},
-			},
-		},
-		// Test failure when the value is not a string
-		{
-			input: &Input{
-				Payload:          `{"sub": "prefix/1234567890/suffix", "name": "John Doe", "iat": 1516239022}`,
-				AttributeMapping: map[string]string{GoogleSubject: "assertion.iat.extract('1516')"},
-			},
-			provider: &oidc.Provider{},
-			expected: &Expected{
-				IsError: true,
-			},
-		},
-	}
-
-	for i, tst := range tests {
-		tc := tst
-		t.Run(fmt.Sprintf("[%d]", i), func(t *testing.T) {
-			c := &Compiler{
-				Input:    tc.input,
-				Provider: tc.provider,
-			}
-			out, err := c.Run()
-
-			if tc.expected.IsError {
-				if err == nil {
-					t.Fatalf("Run(%v) = %s, expected an error", c.Input, err)
-				}
-			} else {
-				if err != nil {
-					t.Fatalf("Run(%v) = %s, expected no error", c.Input, err)
-				}
-			}
-
-			if !reflect.DeepEqual(tc.expected.Result, out) {
-				t.Fatalf("Run(%v) = %s, expected %s", c.Input, out, tc.expected.Result)
 			}
 		})
 	}
