@@ -14,6 +14,8 @@ Features 🚀:
 * Playground in order to test interactively if a _subject token_ match or not a WIF setup. A public instance is available [here](https://play.wif.lsikidi.org)!
 * `wif-go`: Package (used by the playground) emulating WIF behavior when a _subject token_ is given
 
+![](doc/img/playground.gif)
+
 ## Why
 
 Today, GCP _(Google Cloud Platforms)_ doesn't provide a way to test `Workload Identity Federation` setup beforehand (eg. unit test, web playground) in order to check if the _attribute mapping_ and/or the _attibute condition_ is suitable for your use case.

@@ -34,7 +34,7 @@
 </template>
   
 <script setup>
-    import { computed, ref, toRaw } from 'vue'
+    import { computed, ref, toRaw, onMounted } from 'vue'
     import { json } from '@codemirror/lang-json'
     import { jsonParseLinter } from '@codemirror/lang-json'
     import Editor from './Editor.vue'
@@ -105,6 +105,18 @@
         event.preventDefault()
       }
     }
+
+    onMounted(() => {
+      // [HACK]: emulate resize event to set fixed width of the editor
+      const gutter = document.getElementsByClassName("gutter-horizontal")[0]
+      const coordonates = gutter.getBoundingClientRect()
+      startHzDrag()
+      onDrag(new MouseEvent('mousemove', {
+        clientX: coordonates.x,
+        clientY: coordonates.y
+      }))
+      endDrag()
+    })
   </script>
 
 <style scoped>

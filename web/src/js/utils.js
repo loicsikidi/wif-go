@@ -14,7 +14,4 @@ export const utils = {
             return false
         }
     },
-    sleep(ms){
-        return new Promise(r => setTimeout(r, ms))
-    }
 }

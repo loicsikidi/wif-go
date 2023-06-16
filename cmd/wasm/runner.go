@@ -7,7 +7,6 @@ import (
 	"syscall/js"
 
 	"github.com/loicsikidi/wif-go/pkg/compiler"
-	"github.com/loicsikidi/wif-go/pkg/compiler/provider/oidc"
 )
 
 var Version string
@@ -50,7 +49,6 @@ func (r *Runner) Run(this js.Value, args []js.Value) (any, error) {
 			AttributeMapping:   attrMapping,
 			AttributeCondition: attrCondition,
 		},
-		Provider: &oidc.Provider{},
 	}
 
 	res, err := r.c.Run()

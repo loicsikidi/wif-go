@@ -1,0 +1,1 @@
+curl -X POST 'https://justtrustme.dev/token?aud=awesome_demo' -d '{"groups":["group1", "group2"]}'

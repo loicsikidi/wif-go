@@ -1,0 +1,6 @@
+{
+    "mapping": {
+      "google.subject": "'myprovider::' + assertion.aud",
+      "google.groups": "has(assertion.groups) ? assertion.groups : []"
+    }
+}

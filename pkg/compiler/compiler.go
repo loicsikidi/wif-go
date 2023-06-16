@@ -18,6 +18,7 @@ import (
 
 	// Link in all of the functions
 	allFns "github.com/loicsikidi/wif-go/pkg/compiler/functions/all"
+	allProviders "github.com/loicsikidi/wif-go/pkg/compiler/provider/all"
 )
 
 // Standard google attributes defined by Google Cloud Platform.
@@ -157,6 +158,16 @@ func (c *Compiler) Run() (map[string]any, error) {
 		if !strings.HasPrefix(k, fmt.Sprintf("%s.", attribute.Attribute)) && k != GoogleSubject && k != GoogleGroups {
 			return nil, fmt.Errorf("invalid attribute mapping key: %s.\nOnly 'google.subject', 'google.groups' and 'attribute.<custom_attribute>' are accepted", k)
 		}
+	}
+
+	if c.Provider == nil {
+		provider, err := allProviders.AmbientProvider(c.Input.Payload)
+
+		if err != nil {
+			return nil, err
+		}
+
+		c.Provider = provider
 	}
 
 	input, err := c.Provider.GetInputVar(c.Input.Payload)

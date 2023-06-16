@@ -14,3 +14,8 @@ message AttributeSchema {
 message OidcSchema {
   google.protobuf.Value assertion = 1;
 }
+
+message SamlSchema {
+  string subject = 1;
+  google.protobuf.Value attributes = 2;
+}
