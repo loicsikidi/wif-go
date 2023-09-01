@@ -3,8 +3,8 @@ module github.com/loicsikidi/wif-go
 go 1.20
 
 require (
-	github.com/google/cel-go v0.16.0
-	google.golang.org/protobuf v1.30.0
+	github.com/google/cel-go v0.18.0
+	google.golang.org/protobuf v1.31.0
 )
 
 require (
